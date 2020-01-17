@@ -71,7 +71,7 @@ const FormBuilder = {
             model: vm.values,
             labelWidth: vm.labelWidth
           },
-          ref: vm.formRef
+          ref: vm.formRef 
         },
         [
           ...(vm.$slots.prepend || []),
@@ -245,12 +245,12 @@ const FormBuilder = {
             const datePicker = h('el-date-picker', {
               attrs: {
                 ...vm.filterAttrs(item),
-                type: item.dateType
+                type: item._type
               },
               props: {
                 value,
                 ...item,
-                type: item.dateType
+                type: item._type
               },
               on: {
                 ...modelEvents

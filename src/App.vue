@@ -1,25 +1,33 @@
 
 <template>
   <div id="app">
-    <el-json-form :config="formJson" :model="formModel" :formRef="`form1`" ref="form" label-width="80px">
+    <el-json-form :config="formJson" :model="formModel"  ref="form" label-width="80px">
       <div slot="append" class="submit-item">
         <el-button type="primary" @click="onSubmit">提交</el-button>
       </div>
     </el-json-form>
-    <el-json-table :config="tableJson" :data="tableData" @select="select" @select-all="selectAll" @selection-change="handleSelectionChange" @cell-click="handleCellClick">
+    <el-json-table 
+    :config="tableJson" 
+    :data="tableData" 
+    @select="select" 
+    @select-all="selectAll" 
+    @selection-change="handleSelectionChange" 
+    @cell-click="handleCellClick">
+      <!--如果要自定义table-column, 只要指定v-slot:名字, 然后像以前一样写就可以了----->
       <template v-slot:name="scope">
-            <el-button type="text" @click="openModel(scope.row)">{{scope.row.name + '自定义row'}}</el-button>
-</template>
+          <el-button type="text" @click="openModel(scope.row)">{{scope.row.name + '自定义row'}}
+          </el-button>
+      </template>
 
-<template v-slot:sex="scope">
-  <span>{{scope.row.sex === 1 ? '男' : '女'}}</span>
-</template>
+      <template v-slot:sex="scope">
+        <span>{{scope.row.sex === 1 ? '男' : '女'}}</span>
+      </template>
 
-<template v-slot:operate="scope">
-  <el-button type="text" @click="openModel(scope.row)">
-    {{'操作1'}}</el-button>
-  <el-button type="text" @click="openModel(scope.row)">{{'操作2'}}</el-button>
-</template>
+      <template v-slot:operate="scope">
+        <el-button type="text" @click="openModel(scope.row)">
+          {{'操作1'}}</el-button>
+        <el-button type="text" @click="openModel(scope.row)">{{'操作2'}}</el-button>
+      </template>
     </el-json-table>
   </div>
 </template>
@@ -30,23 +38,6 @@ import Vue from 'vue'
 export default {
   name: "app",
   components: {},
-  watch: {
-    formJson: {
-      deep: true,
-      immediate: true,
-      handler({
-        rules,
-        elements
-      }) {
-        // this.formJson = JSON.parse(JSON.stringify(this.formJson))
-        try {
-          this.formJson1 = JSON.parse(JSON.stringify(this.formJson))
-        } catch (err) {
-          console.error('[JSON Parse Error] -> ', err.message)
-        }
-      }
-    }
-  },
   data() {
     return {
       formModel: {},
@@ -140,7 +131,7 @@ export default {
           "date": {
             "type": "datePicker",
             "label": "日期",
-            "dateType": "daterange",
+            "_type": "daterange",
             "format": "yyyy 第 WW 周",
             "placeholder": "选择周",
             "rangeSeparator": "至",
