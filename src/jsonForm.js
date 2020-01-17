@@ -17,12 +17,6 @@ const FormBuilder = {
         return 'form1'
       }
     },
-    rules: {
-      type: Object,
-      default () {
-        return {}
-      }
-    },
     config: {
       type: Object,
       default () {
@@ -30,7 +24,7 @@ const FormBuilder = {
           formAttr: {
             
           },
-          rules: [],
+          rules: {},
           properties: {}
         }
       }
@@ -74,8 +68,7 @@ const FormBuilder = {
         {
           props: {
             ...vm.config.formAttr,
-            model: vm.model,
-            rules: vm.config.rules,
+            model: vm.values,
             labelWidth: vm.labelWidth
           },
           ref: vm.formRef
@@ -83,7 +76,6 @@ const FormBuilder = {
         [
           ...(vm.$slots.prepend || []),
           ...(vm.renderFormItems(h) || []),
-          ...(vm.renderOperate(h) || []),
           ...(vm.$slots.append || [])
         ]
       )
@@ -95,7 +87,7 @@ const FormBuilder = {
       resetFields() {
         const vm = this;
         // model为props传递，在父组件调用from的方法，并不会触发该form实例组件的model的watch，因此临时解决办法手动改变model的引用
-        vm.model = Object.assign({}, vm.model)
+        // vm.model = Object.assign({}, vm.model)
         vm.$refs[vm.formRef].resetFields();
       },
       validate(cb) {
@@ -130,7 +122,11 @@ const FormBuilder = {
             if (Array.isArray(formData[key]) && formData[key].length === 0 && (!model || !model[key])) {
               mergeValues[key] = []
             }
+            const { type } = properties[key]
+            // 如果是button
+            if (type === 'button') delete mergeValues[key]
           })
+          
           return mergeValues
       },
       filterAttrs (item = {}) {
@@ -150,28 +146,6 @@ const FormBuilder = {
           })
       
           return attrs
-      },
-      // 渲染按钮，如查询，重置，导出
-      renderOperate(h) {
-        const vm = this
-        const { operate={} }=  vm.config;
-        // todo,如何设置button组件的value
-        return Object.keys(operate).map((key, index) => {
-          const { value } = operate[key]
-            const btn = h('el-button', {
-              attrs: {
-                ...vm.filterAttrs(operate[key])
-              },
-              props: {
-                value,
-                ...operate[key]
-              },
-              on: {
-                // ...modelEvents
-              }
-            })
-            return btn
-        })
       },
       renderFormItems (h) {
           const vm = this
@@ -208,8 +182,17 @@ const FormBuilder = {
               ...modelEvents
             }
           })
+          const button = h('el-button', {
+            attrs: {
+              ...vm.filterAttrs(item),
+              type: item._type
+            },
+            props: {
+              ...item,
+              type: item._type
+            }
+          }, item.text || item.value)
           // select
-          
           const select = h(
               'el-select',
               {
@@ -287,6 +270,7 @@ const FormBuilder = {
             })
             const elements = {
                 [type]: formEachItem,
+                'button': button,
                 'select': select,
                 'input': input,
                 'radios': radios,
