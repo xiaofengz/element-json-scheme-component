@@ -1,5 +1,7 @@
 ### json scheme Form && Table, based on element-ui
 > element ui的form和table, 根据json scheme生成
+
+![](https://github.com/xiaofengz/element-json-schema-form/blob/master/gif/form11.gif)
 ## Live Playground 在线demo，在线编辑json
 A [live playground](https://xiaofengz.github.io/element-json-schema-form/) is hosted on gh-pages.
 
