@@ -5,6 +5,8 @@
 ## Live Playground 在线demo，在线编辑json
 A [live playground](https://xiaofengz.github.io/element-json-schema-form/) is hosted on gh-pages.
 
+## Documentation
+
 #### Form组件的用法：el-json-form组件
 - 必须手动绑定:model="xxx", 在data里设置为xxx:{}即可，需初始化，否则elementUi会报错
 
