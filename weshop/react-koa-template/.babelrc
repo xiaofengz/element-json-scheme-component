@@ -1,0 +1,44 @@
+// {
+//   "presets": [
+//     ["@babel/preset-env", {
+//       "modules": false,
+//       "targets": {
+//         "browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
+//       },
+//       "useBuiltIns": "usage"
+//     }]
+//   ],
+//   "plugins": [
+//     "@babel/plugin-transform-runtime",
+//     "@babel/plugin-transform-object-assign",
+//     ["@babel/plugin-proposal-decorators", { "legacy": true }],
+//     "@babel/plugin-proposal-class-properties"
+//   ]
+// }
+{
+  "presets": [
+    "es2015",
+    "react",
+    "stage-0"
+  ],
+  "plugins": [
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "libraryDirectory": "lib",
+        "style": true
+      },
+      "ant"
+    ],       // 按需引入antd组件
+    "transform-object-assign",
+    "transform-class-properties",
+    "jsx-control-statements",
+    "transform-decorators-legacy",
+    ["transform-runtime", {
+      "helpers": false,
+      "polyfill": false,
+      "regenerator": true
+  }],
+  ]
+}
