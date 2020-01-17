@@ -95,7 +95,6 @@ const TableBuilder = {
           item.prop && vm.$scopedSlots[item.prop] ? {
             scopedSlots: {
               default: props => {
-                console.log('props', props)
                 return vm.$scopedSlots[item.prop](props)
                 // return vm.cloumnsRender[item.prop](h, props.row[item.prop], props.row, props.row.$index) 
               }
