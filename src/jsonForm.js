@@ -74,6 +74,8 @@ const FormBuilder = {
           ref: vm.formRef 
         },
         [
+          h('h3', vm.config.title || ''),
+          h('p', vm.config.describe || ''),
           ...(vm.$slots.prepend || []),
           ...(vm.renderFormItems(h) || []),
           ...(vm.$slots.append || [])
