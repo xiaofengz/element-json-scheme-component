@@ -5,7 +5,6 @@
 ## Live Preview 在线demo，在线编辑json
 A [live Preview](https://xiaofengz.github.io/element-json-schema-form/) is hosted on gh-pages.
 
-
 ## Install
 
 ```bash
