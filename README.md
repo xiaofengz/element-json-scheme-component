@@ -1,14 +1,31 @@
-### json scheme Form && Table, based on element-ui
+## json scheme Form && Table, based on element-ui
 > element ui的form和table, 根据json scheme生成
 
 ![](https://github.com/xiaofengz/element-json-schema-form/blob/master/gif/form11.gif)
-## Live Playground 在线demo，在线编辑json
-A [live playground](https://xiaofengz.github.io/element-json-schema-form/) is hosted on gh-pages.
+## Live Preview 在线demo，在线编辑json
+A [live Preview](https://xiaofengz.github.io/element-json-schema-form/) is hosted on gh-pages.
 
-#### Form组件的用法：el-json-form组件
-- 必须手动绑定:model="xxx", 在data里设置为xxx:{}即可，需初始化，否则elementUi会报错
 
-基本用法：
+## Install
+
+```bash
+npm i element-json-scheme-component
+```
+
+## Registry
+
+```javascript
+import ElJsonSchemaComponent from 'element-json-scheme-component';
+
+const { ElJsonForm, ElJsonTable } = ElJsonSchemaComponent
+Vue.use(ElementUI);
+Vue.use(ElJsonForm)
+```
+
+### Form组件的用法：el-json-form组件
+- 必须手动绑定 :model="xxx", 在data里设置为xxx:{}即可，需初始化，否则elementUi会报错
+
+#### 基本用法：
 ```
 <el-json-form :config="formJson" :model="formModel" ref="form" label-width="80px">
   <div slot="append" class="submit-item">
