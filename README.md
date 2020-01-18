@@ -1,5 +1,5 @@
 ## json scheme Form && Table, based on element-ui
-> element ui的form和table, 根据json scheme生成
+> 完全根据json scheme生成element ui的form组件和table组件，同时也支持自定义slot.
 
 ![](https://github.com/xiaofengz/element-json-schema-form/blob/master/gif/form11.gif)
 ## Live Preview 在线demo，在线编辑json
