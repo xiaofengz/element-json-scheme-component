@@ -3,7 +3,7 @@
 
 ![](https://github.com/xiaofengz/element-json-schema-form/blob/master/gif/form11.gif)
 ## Live Preview 在线demo，在线编辑json
-A [live Preview](https://xiaofengz.github.io/element-json-schema-form/) is hosted on gh-pages.
+A [live Preview](https://xiaofengz.github.io/element-json-schema-component/) is hosted on gh-pages.
 
 ## Install
 
