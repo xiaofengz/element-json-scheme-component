@@ -21,7 +21,7 @@ Vue.use(ElJsonForm);
 Vue.use(ElJsonTable);
 ```
 
-### Form组件的用法：el-json-form组件   [示例代码](https://github.com/xiaofengz/element-json-scheme-component/blob/master/src/examples/form-default.vue)  [在线demo](https://xiaofengz.github.io/element-json-scheme-component/#/form-default)
+### Form组件的用法：el-json-form组件   [示例代码](https://github.com/xiaofengz/element-json-scheme-component/blob/master/src/examples/form_default.vue)  [在线demo](https://xiaofengz.github.io/element-json-scheme-component/#/form-default)
 - 必须手动绑定 :model="xxx", 在data里设置为xxx:{}即可，需初始化，否则elementUi会报错
 
 #### 基本用法：
@@ -117,7 +117,7 @@ methods: {
 
 
 
-#### Table组件的用法：el-json-table组件 [示例代码](https://github.com/xiaofengz/element-json-scheme-component/blob/master/src/examples/table-default.vue)  [在线demo](https://xiaofengz.github.io/element-json-scheme-component/#/table-default)
+#### Table组件的用法：el-json-table组件 [示例代码](https://github.com/xiaofengz/element-json-scheme-component/blob/master/src/examples/table_default.vue)  [在线demo](https://xiaofengz.github.io/element-json-scheme-component/#/table-default)
 
 基本用法：
 
@@ -188,6 +188,6 @@ methods: {
 </el-json-table>
 ```
 
-### 完整demo代码: [示例代码](https://github.com/xiaofengz/element-json-scheme-component/blob/master/src/examples/table-default.vue)  [在线demo](https://xiaofengz.github.io/element-json-scheme-component/#/table-default)
+### 完整demo代码: [示例代码](https://github.com/xiaofengz/element-json-scheme-component/blob/master/src/examples/complete_demo.vue)  [在线demo](https://xiaofengz.github.io/element-json-scheme-component/#/table-default)
 
 > 完整页面包含form && table && 分页
