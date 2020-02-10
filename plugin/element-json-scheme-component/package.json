@@ -1,0 +1,51 @@
+{
+  "name": "element-json-scheme-component",
+  "version": "1.0.6",
+  "description": " json scheme Form && Table && pagination, based on element-ui  ",
+  "main": "dist/index.js",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "node build/index.js",
+    "test": "yarn test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaofengz/element-json-schema-form.git"
+  },
+  "keywords": [
+    "vue",
+    "element",
+    "element-ui",
+    "form",
+    "table",
+    "json",
+    "json-schema"
+  ],
+  "author": "xiaofengz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xiaofengz/element-json-schema-form/issues"
+  },
+  "homepage": "https://xiaofengz.github.io/element-json-schema-form/",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.0.1",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "eslint": "^5.10.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^22.1.2",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "jest": "^23.6.0",
+    "rollup": "^0.67.4",
+    "rollup-plugin-babel": "3"
+  }
+}
