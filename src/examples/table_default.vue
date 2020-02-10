@@ -78,7 +78,13 @@
                             label: '操作',
                             width: 180
                         }
-                    ]
+                    ],
+                    // 分页配置
+                    "pagination": {
+                        "layout": "total, sizes, prev, pager, next, jumper",
+                        "total": 3,
+                        "hideOnSinglePage": false
+                    }
                 },
             }
         },

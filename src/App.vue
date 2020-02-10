@@ -4,6 +4,7 @@
         <div class="btns">
             <el-button @click="push('form-default')">Form</el-button>
             <el-button @click="push('table-default')">Table</el-button>
+            <el-button @click="push('compelete-demo')">完整例子</el-button>
         </div>
         <router-view></router-view>
     </div>

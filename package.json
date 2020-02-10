@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "npm run serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -14,15 +15,15 @@
     "vue-router": "^3.1.5"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.1.0",
-    "@vue/cli-plugin-eslint": "^4.1.0",
-    "@vue/cli-service": "^4.1.0",
+    "@vue/cli-plugin-babel": "^4.2.2",
+    "@vue/cli-plugin-eslint": "^4.2.2",
+    "@vue/cli-service": "^4.2.2",
     "babel-eslint": "^10.0.3",
     "babel-plugin-component": "^1.1.1",
-    "element-json-scheme-component": "^1.0.1",
+    "element-json-scheme-component": "^1.0.5",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "jsoneditor": "^8.3.0",
+    "jsoneditor": "^8.5.3",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
