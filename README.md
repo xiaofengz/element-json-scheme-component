@@ -25,7 +25,7 @@ Vue.use(ElJsonTable);
 - 必须手动绑定 :model="xxx", 在data里设置为xxx:{}即可，需初始化，否则elementUi会报错
 
 #### 基本用法：
-```
+```javascript
 <el-json-form :config="formJson" :model="formModel" ref="form" label-width="80px">
   <div slot="append" class="submit-item">
     <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -72,8 +72,9 @@ mothods: {
     }
 }
 ```
+
 ### 如果select组件的options数据需后端获取，在mounted手动修改this.formJson即可，写法如下
-```
+```javascript
   mounted() {
     // 如果options是后端数据的demo, 手动修改this.formJson即可
     new Promise((resolve) => {
@@ -91,8 +92,9 @@ mothods: {
     })
   },
 ```
+
 ### 如果input组件为异步搜索，写法如下
-```
+```javascript
 mounted() {
     // 异步搜索demo
     this.formJson.properties.search.fetchSuggestions = (queryString, cb) => this.fetch(queryString, cb)
@@ -118,7 +120,8 @@ methods: {
 #### Table组件的用法：el-json-table组件 [示例代码](https://github.com/xiaofengz/element-json-scheme-component/blob/master/src/examples/table-default.vue)  [在线demo](https://xiaofengz.github.io/element-json-scheme-component/#/table-default)
 
 基本用法：
-```
+
+```javascript
 <el-json-table 
     :config="tableJson" 
     :data="tableData" 
@@ -161,7 +164,8 @@ methods: {
 
 #### 自定义table-column
 > 指定v-slot:xxx="scope"即可
-```
+
+```javascript
 <el-json-table 
   :config="tableJson" 
   :data="tableData" 
