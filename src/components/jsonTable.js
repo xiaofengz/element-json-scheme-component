@@ -62,6 +62,9 @@ const TableBuilder = {
             pageSizes: [10, 25, 50, 100],
             ...vm.filterAttrs(vm.config.pagination),
           },
+          props: {
+            ...vm.config.pagination,
+          },
           on: {
             'size-change': (val) => vm.$emit('on-query', {
               limit: val,
@@ -89,7 +92,8 @@ const TableBuilder = {
             ...vm.filterAttrs(vm.config)
           },
           props: {
-            data: vm.data
+            data: vm.data,
+            ...vm.config
           },
           on: {
             'select': (selection, row) => vm.emitEventHandler('select', selection, row),
@@ -144,7 +148,8 @@ const TableBuilder = {
               ...vm.filterAttrs(item)
             },
             props: {
-              data: vm.data
+              data: vm.data,
+              ...item
             },
             on: {},
           },

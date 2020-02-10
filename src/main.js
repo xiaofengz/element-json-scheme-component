@@ -6,9 +6,9 @@ import VueRouter from 'vue-router';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue';
-// import ElJsonForm from './components/jsonForm.js'
-// import ElJsonTable from './components/jsonTable.js'
-import ElJsonSchemaComponent from 'element-json-scheme-component';
+import ElJsonForm from './components/jsonForm.js'
+import ElJsonTable from './components/jsonTable.js'
+// import ElJsonSchemaComponent from 'element-json-scheme-component';
 
 import FormDefault from './examples/form_default.vue';
 import FormRules from './examples/form_rules.vue';
@@ -16,8 +16,8 @@ import FormRules from './examples/form_rules.vue';
 import TableDefault from './examples/table_default.vue';
 
 import CompleteDemo from './examples/complete_demo.vue';
-console.log(ElJsonSchemaComponent)
-const { ElJsonForm, ElJsonTable } = ElJsonSchemaComponent
+// console.log(ElJsonSchemaComponent)
+// const { ElJsonForm, ElJsonTable } = ElJsonSchemaComponent
 Vue.use(ElementUI);
 Vue.use(ElJsonForm);
 Vue.use(ElJsonTable);

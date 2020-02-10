@@ -6,8 +6,8 @@
         <el-button type="primary" :loading="loading" @click="onSubmit({page: 1})">提交</el-button>
       </div>
     </el-json-form>
-    <el-json-table :config="tableJson" :data="tableData" @on-query="onSubmit" @select="select" @select-all="selectAll" @selection-change="handleSelectionChange" @cell-click="handleCellClick">
-      <!--如果要自定义table-column, 只要指定v-slot:名字, 然后像以前一样写就可以了----->
+    <el-json-table :config="tableJson" :data="tableData" @on-query="onSubmit" @select="select" @select-all="selectAll" @selection-change="handleSelectionChange" @cell-click="handleCellClick" @sort-change="handleSortChange">
+      <!--如果要自定义table-column, 只要指定v-slot:名字, 然后像以前一样写就可以了-->
       <template v-slot:name="scope">
         <el-button type="text" @click="openModel(scope.row)">{{scope.row.name + '自定义row'}}
         </el-button>
@@ -48,7 +48,8 @@
           }, {
             prop: 'name',
             label: 'Name',
-            width: 80
+            width: 80,
+            sortable: true
           }, {
             prop: 'mobile',
             label: 'Mobile',
@@ -56,7 +57,28 @@
           }, {
             prop: 'sex',
             label: 'Sex',
-            width: 80
+            width: 80,
+            renderHeader: (h, { column, $index }) => {
+            return h(
+                'span', null,
+                [
+                    column.label,
+                    h('el-button',
+                        {
+                            props: {
+                                size: 'mini',
+                                type: 'primary',
+                            },
+                            class: 'm-l-5',
+                            on: {
+                                click: () => {console.log('刷新')}
+                            }
+                        },
+                        ['刷新']
+                    )
+                ]
+            );
+        },
           }, {
             prop: 'operate',
             label: '操作',
@@ -173,8 +195,8 @@
         console.log(`当前页: ${val}`);
       },
       onSubmit(params) {
-        console.log('submit! formValue:-------', this.$refs.form.values);
-        console.log('pagination-params:-------', params)
+        console.log('submit! formValue:', this.$refs.form.values);
+        console.log('pagination-params:', params)
         // 调用form实例的方法demo
         // this.$refs.form.resetFields();
         this.$refs.form.validate((valid, err) => {
@@ -225,6 +247,9 @@
       },
       handleCellClick(val) {
         console.log('handleCellClick', val)
+      },
+      handleSortChange(sort) {
+        console.log('handleSortChange', sort)
       },
       openModel(row) {
         console.log('openModel', row)
