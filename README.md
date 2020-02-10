@@ -17,8 +17,8 @@ npm i element-json-scheme-component
 import ElJsonSchemaComponent from 'element-json-scheme-component';
 
 const { ElJsonForm, ElJsonTable } = ElJsonSchemaComponent
-Vue.use(ElementUI);
-Vue.use(ElJsonForm)
+Vue.use(ElJsonForm);
+Vue.use(ElJsonTable);
 ```
 
 ### Form组件的用法：el-json-form组件   [示例代码](https://github.com/xiaofengz/element-json-scheme-component/blob/master/src/examples/form-default.vue)  [在线demo](https://xiaofengz.github.io/element-json-scheme-component/#/form-default)
