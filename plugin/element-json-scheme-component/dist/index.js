@@ -1,5 +1,5 @@
 /**
- * v1.0.6
+ * v1.0.7
  * (c) 2020 by xiaofengz
  */
 var defineProperty = function (obj, key, value) {
@@ -82,7 +82,8 @@ var FormBuilder = {
         this.$emit('input', values);
         this.updating = false;
       },
-      deep: true
+      deep: true,
+      immediate: true
     },
     model: {
       handler: function handler(model, model2) {
@@ -120,8 +121,6 @@ var FormBuilder = {
   methods: {
     resetFields: function resetFields() {
       var vm = this;
-      // model为props传递，在父组件调用from的方法，并不会触发该form实例组件的model的watch，因此临时解决办法手动改变model的引用
-      // vm.model = Object.assign({}, vm.model)
       vm.$refs[vm.formRef].resetFields();
     },
     validate: function validate(cb) {
@@ -181,6 +180,22 @@ var FormBuilder = {
 
       return attrs;
     },
+    filterEvents: function filterEvents() {
+      var item = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      var keys = Object.keys(item);
+      var events = {};
+
+      keys.forEach(function (key) {
+        var value = item[key];
+
+        if (typeof value === 'function') {
+          events[key] = value;
+        }
+      });
+
+      return events;
+    },
     renderFormItems: function renderFormItems(h) {
       var vm = this;
       var properties = vm.config.properties;
@@ -197,11 +212,11 @@ var FormBuilder = {
       var values = vm.values;
 
       var value = values[key] || null;
-      var modelEvents = {
+      var modelEvents = _extends({
         input: function input(value) {
           values[key] = value;
         }
-      };
+      }, vm.filterEvents(item));
       var type = item.type,
           label = item.label,
           size = item.size;
@@ -220,7 +235,8 @@ var FormBuilder = {
         }),
         props: _extends({}, item, {
           type: item._type
-        })
+        }),
+        on: _extends({}, modelEvents)
       }, item.text || item.value);
       // select
       var select = h('el-select', {
@@ -306,9 +322,19 @@ var TableBuilder = {
       }
     }
   },
-  watch: {},
+  watch: {
+    config: {
+      handler: function handler(newValue, oldValue) {
+        this.pagination = _extends({}, this.pagination, newValue.pagination);
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   data: function data() {
-    return {};
+    return {
+      pagination: {}
+    };
   },
   render: function render(h, context) {
     var vm = this;
@@ -320,7 +346,16 @@ var TableBuilder = {
       attrs: {}
     }, [].concat(toConsumableArray(vm.$slots.tablePrepend || []), [vm.renderTable(h, context)], toConsumableArray(vm.$slots.tableAppend || []), toConsumableArray(vm.$slots.paginationPrepend || []), toConsumableArray(vm.config.pagination === false ? [] : [vm.renderPagination(h, context)]), toConsumableArray(vm.$slots.paginationAppend || [])));
   },
-  created: function created() {},
+  created: function created() {
+    var vm = this;
+    vm.pagination = _extends({
+      layout: "total, sizes, prev, pager, next, jumper",
+      currentPage: 1,
+      pageSize: 25,
+      total: 0,
+      pageSizes: [10, 25, 50, 100]
+    }, vm.config.pagination);
+  },
 
   methods: {
     renderPagination: function renderPagination(h) {
@@ -330,35 +365,25 @@ var TableBuilder = {
         style: {
           marginTop: '10px'
         },
-        attrs: _extends({
-          layout: "total, sizes, prev, pager, next, jumper",
-          currentPage: 1,
-          pageSize: 25,
-          total: 0,
-          pageSizes: [10, 25, 50, 100]
-        }, vm.filterAttrs(vm.config.pagination)),
-        props: _extends({}, vm.config.pagination),
+        attrs: _extends({}, vm.pagination),
+        props: _extends({}, vm.pagination),
         on: {
           'size-change': function sizeChange(val) {
-            return vm.$emit('on-query', {
-              limit: val,
-              page: 1
-            });
+            vm.pagination.pageSize = val;
+            vm.pagination.currentPage = 1;
+            vm.$emit('on-query', { currentPage: 1, pageSize: val });
           },
           'current-change': function currentChange(val) {
-            return vm.$emit('on-query', {
-              page: val
-            });
+            vm.pagination.currentPage = val;
+            vm.$emit('on-query', { currentPage: val, pageSize: vm.pagination.pageSize });
           },
           'prev-change': function prevChange(val) {
-            return vm.$emit('on-query', {
-              page: val
-            });
+            vm.pagination.currentPage = val;
+            vm.$emit('on-query', { currentPage: val, pageSize: vm.pagination.pageSize });
           },
           'next-change': function nextChange(val) {
-            return vm.$emit('on-query', {
-              page: val
-            });
+            vm.pagination.currentPage = val;
+            vm.$emit('on-query', { currentPage: val, pageSize: vm.pagination.pageSize });
           }
         }
       });

@@ -18,9 +18,22 @@ const TableBuilder = {
       }
     },
   },
-  watch: {},
+  watch: {
+    config: {
+      handler: function handler(newValue, oldValue) {
+        this.pagination = {
+          ...this.pagination,
+          ...newValue.pagination
+        }
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   data() {
-    return {}
+    return {
+      pagination: {}
+    }
   },
 
   render(h, context) {
@@ -44,41 +57,50 @@ const TableBuilder = {
       ],
     )
   },
-  created() {},
+  created() {
+    const vm = this
+    vm.pagination = {
+      layout: "total, sizes, prev, pager, next, jumper",
+      currentPage: 1,
+      pageSize: 25,
+      total: 0,
+      pageSizes: [10, 25, 50, 100],
+      ...vm.config.pagination
+    }
+  },
   methods: {
     renderPagination(h) {
       const vm = this
-
+      
       return h(
         'el-pagination', {
           style: {
             marginTop: '10px'
           },
           attrs: {
-            layout: "total, sizes, prev, pager, next, jumper",
-            currentPage: 1,
-            pageSize: 25,
-            total: 0,
-            pageSizes: [10, 25, 50, 100],
-            ...vm.filterAttrs(vm.config.pagination),
+            ...vm.pagination,
           },
           props: {
-            ...vm.config.pagination,
+            ...vm.pagination,
           },
           on: {
-            'size-change': (val) => vm.$emit('on-query', {
-              limit: val,
-              page: 1
-            }),
-            'current-change': (val) => vm.$emit('on-query', {
-              page: val
-            }),
-            'prev-change': (val) => vm.$emit('on-query', {
-              page: val
-            }),
-            'next-change': (val) => vm.$emit('on-query', {
-              page: val
-            }),
+            'size-change': (val) => {
+              vm.pagination.pageSize = val
+              vm.pagination.currentPage = 1
+              vm.$emit('on-query', {currentPage: 1, pageSize: val})
+            },
+            'current-change': (val) => {
+              vm.pagination.currentPage = val
+              vm.$emit('on-query', {currentPage: val, pageSize: vm.pagination.pageSize})
+            },
+            'prev-change': (val) => {
+              vm.pagination.currentPage = val
+              vm.$emit('on-query', {currentPage: val, pageSize: vm.pagination.pageSize})
+            },
+            'next-change': (val) => {
+              vm.pagination.currentPage = val
+              vm.$emit('on-query', {currentPage: val, pageSize: vm.pagination.pageSize})
+            },
           }
         }
       )

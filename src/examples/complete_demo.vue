@@ -3,21 +3,21 @@
   <div id="app">
     <el-json-form :config="formJson" :model="formModel" ref="form" label-width="80px">
       <div slot="append" class="submit-item el-form-item">
-        <el-button type="primary" :loading="loading" @click="onSubmit({page: 1})">提交</el-button>
+        <el-button type="primary" :loading="loading" @click="onSubmit({currentPage: 1})">提交</el-button>
       </div>
     </el-json-form>
     <el-json-table :config="tableJson" :data="tableData" @on-query="onSubmit" @select="select" @select-all="selectAll" @selection-change="handleSelectionChange" @cell-click="handleCellClick" @sort-change="handleSortChange">
-      <!--如果要自定义table-column, 只要指定v-slot:名字, 然后像以前一样写就可以了-->
-      <template v-slot:name="scope">
+      <!--如果要自定义table-column, 只要指定v-slot:名字, 然后像以前一样写就可以了(3.0以上才支持v-slot，可以改成slot="xxx" slot-scope="scope")-->
+      <template slot="name" slot-scope="scope"  >
         <el-button type="text" @click="openModel(scope.row)">{{scope.row.name + '自定义row'}}
         </el-button>
       </template>
 
-      <template v-slot:sex="scope">
+      <template slot="sex" slot-scope="scope" >
         <span>{{scope.row.sex === 1 ? '男' : '女'}}</span>
       </template>
 
-      <template v-slot:operate="scope">
+      <template slot="operate" slot-scope="scope" >
         <el-button type="text" @click="openModel(scope.row)">
           {{'操作1'}}</el-button>
         <el-button type="text" @click="openModel(scope.row)">{{'操作2'}}</el-button>
@@ -42,13 +42,14 @@
           "style": {
             "width": "300px"
           },
+          "border": true,
           "columns": [{
             type: 'selection',
             width: 55
           }, {
             prop: 'name',
             label: 'Name',
-            width: 80,
+            width: 140,
             sortable: true
           }, {
             prop: 'mobile',
@@ -118,7 +119,7 @@
             "sex": {
               "type": "select",
               "label": "性别",
-              "multiple": true,
+              // "multiple": true,
               "options": [{
                   "label": "男",
                   "value": 1
@@ -151,7 +152,14 @@
               "type": "autocomplete",
               "label": "远程搜索",
               "placeholder": "请搜索...",
-            }
+            },
+            "id": {
+              "type": "input",
+              // "mode": "text",  // textarea, number, password...
+              "label": "工号",
+              // "suffix-icon": "el-icon-search",
+              "placeholder": "请输入工号...",
+            },
           },
         }
       }
@@ -171,6 +179,20 @@
           ]
         }, 1000)
       })
+      // 绑定change,blur,focus等事件demo
+      this.formJson.properties.id.change = (value) => {
+        console.log(value)
+        this.onSubmit()
+      }
+      this.formJson.properties.button.click = (value) => {
+        console.log(value)
+        this.onSubmit()
+      }
+      
+      this.formJson.properties.date.change = (value) => {
+        console.log(value[0], value[1])
+        this.onSubmit()
+      }
       // 异步搜索demo
       this.formJson.properties.search.fetchSuggestions = (queryString, cb) => this.fetch(queryString, cb)
     },
@@ -194,9 +216,9 @@
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
       },
-      onSubmit(params) {
+      onSubmit(payload={}) {
         console.log('submit! formValue:', this.$refs.form.values);
-        console.log('pagination-params:', params)
+        console.log('pagination-payload:', payload)
         // 调用form实例的方法demo
         // this.$refs.form.resetFields();
         this.$refs.form.validate((valid, err) => {
@@ -219,7 +241,7 @@
                 }
               ],
               total: 98,
-              currentPage: params.page || 1
+              currentPage: payload.currentPage || 1
             }
             this.loading = true
             setTimeout(() => {

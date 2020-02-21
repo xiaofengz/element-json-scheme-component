@@ -41,7 +41,8 @@ const FormBuilder = {
         this.$emit('input', values);
         this.updating = false;
       },
-      deep: true
+      deep: true,
+      immediate: true
     },
     model: {
       handler(model, model2) {
@@ -87,8 +88,6 @@ const FormBuilder = {
   methods: {
     resetFields() {
       const vm = this;
-      // model为props传递，在父组件调用from的方法，并不会触发该form实例组件的model的watch，因此临时解决办法手动改变model的引用
-      // vm.model = Object.assign({}, vm.model)
       vm.$refs[vm.formRef].resetFields();
     },
     validate(cb) {
@@ -159,6 +158,20 @@ const FormBuilder = {
 
       return attrs
     },
+    filterEvents(item = {}) {
+      const keys = Object.keys(item)
+      const events = {}
+
+      keys.forEach(key => {
+        const value = item[key]
+
+        if ( typeof value === 'function' ) {
+          events[key] = value
+        }
+      })
+
+      return events
+    },
     renderFormItems(h) {
       const vm = this
       const {
@@ -178,7 +191,8 @@ const FormBuilder = {
       const modelEvents = {
         input: function (value) {
           values[key] = value
-        }
+        },
+        ...vm.filterEvents(item)
       }
       const {
         type,
@@ -206,6 +220,9 @@ const FormBuilder = {
         props: {
           ...item,
           type: item._type
+        },
+        on: {
+          ...modelEvents
         }
       }, item.text || item.value)
       // select
@@ -253,7 +270,9 @@ const FormBuilder = {
               ...modelEvents
             }
           },
-          [option.text]
+          [
+            option.text
+          ]
         )
       })
       const datePicker = h('el-date-picker', {

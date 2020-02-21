@@ -1,4 +1,7 @@
 ## json scheme Form && Table, based on element-ui
+
+[![NPM version](https://img.shields.io/badge/npm-v1.0.7-brightgreen)](https://www.npmjs.com/package/element-json-scheme-component)
+
 > 完全根据json scheme生成element ui的form组件和table组件，同时也支持自定义slot.
 
 ![](https://github.com/xiaofengz/element-json-schema-form/blob/master/gif/form11.gif)
@@ -170,12 +173,18 @@ methods: {
   :config="tableJson" 
   :data="tableData" 
   @select-all="selectAll" >
-    <!--如果要自定义table-column, 只要指定v-slot:名字, 然后像以前一样写就可以了----->
+    <!--如果要自定义table-column, 只要指定v-slot:名字, 然后像以前一样写就可以了-->
     <template v-slot:name="scope">
       <el-button type="text" @click="openModel(scope.row)">{{scope.row.name + '自定义row'}}
       </el-button>
     </template>
-
+    
+    <!-- vue3以上才支持v-slot，3.0以下可以这样写 -->
+    <template slot="name" slot-scope="scope"  >
+        <el-button type="text" @click="openModel(scope.row)">{{scope.row.name + '自定义row'}}
+        </el-button>
+    </template>
+    
     <template v-slot:sex="scope">
       <span>{{scope.row.sex === 1 ? '男' : '女'}}</span>
     </template>
