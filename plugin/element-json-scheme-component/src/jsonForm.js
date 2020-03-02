@@ -30,8 +30,7 @@ const FormBuilder = {
       }
     },
     labelWidth: {
-      type: String,
-      default: '150px'
+      type: String
     }
   },
   watch: {
@@ -90,12 +89,37 @@ const FormBuilder = {
       const vm = this;
       vm.$refs[vm.formRef].resetFields();
     },
+    setFieldValue(key, value) {
+      const vm = this;
+      vm.values[key] = value
+    },
+    setFieldsValue(obj) {
+      const vm = this;
+      Object.keys(obj).map(key => {
+        vm.values[key] = obj[key]
+      })
+    },
+    getFieldsValue() {
+      const vm = this;
+      return vm.values
+    },
     validate(cb) {
       const vm = this;
       vm.$refs[vm.formRef].validate(cb);
     },
     validateField(cb) {
       vm.$refs[vm.formRef].validateField(cb);
+    },
+    // 异步校验表单，直接返回values
+    validateFields(cb) {
+      const vm = this;
+      return new Promise((resolve, reject) => {
+        vm.$refs[vm.formRef].validate((valid, err) => {
+          if (valid) resolve(vm.values)
+          else reject(err)
+        })
+      })
+      
     },
     mergeValues() {
       const vm = this;
@@ -105,8 +129,8 @@ const FormBuilder = {
       const {
         properties
       } = vm.config;
-      let formData = {}
 
+      let formData = {}
       Object.keys(properties).map(key => {
         const {
           type,
@@ -114,7 +138,6 @@ const FormBuilder = {
         } = properties[key]
         let defaultValue
         if (type === 'checkbox' || (type === 'select' && multiple)) {
-
           defaultValue = defaultValue != null ? properties[key].defaultValue : []
         } else {
           defaultValue = properties[key].defaultValue
@@ -128,6 +151,7 @@ const FormBuilder = {
         ...model
       }
       Object.keys(formData).forEach(key => {
+        // 强制设置多选的value为空数组，因为model可能会乱设置
         if (Array.isArray(formData[key]) && formData[key].length === 0 && (!model || !model[key])) {
           mergeValues[key] = []
         }
@@ -137,7 +161,6 @@ const FormBuilder = {
         // 如果是button
         if (type === 'button') delete mergeValues[key]
       })
-
       return mergeValues
     },
     filterAttrs(item = {}) {
@@ -201,6 +224,7 @@ const FormBuilder = {
       } = item
 
       const formEachItem = h(type.startWith("el") ? `${type}` : `el-${type}`, {
+        style: item.style || {},
         attrs: {
           ...vm.filterAttrs(item)
         },
@@ -213,6 +237,7 @@ const FormBuilder = {
         }
       })
       const button = h('el-button', {
+        style: item.style || {},
         attrs: {
           ...vm.filterAttrs(item),
           type: item._type
@@ -228,6 +253,7 @@ const FormBuilder = {
       // select
       const select = h(
         'el-select', {
+          style: item.style || {},
           attrs: {
             ...vm.filterAttrs(item)
           },
@@ -259,6 +285,7 @@ const FormBuilder = {
         }
         return h(
           'el-radio', {
+            style: item.style || {},
             attrs: {
               ...vm.filterAttrs(option)
             },
@@ -276,6 +303,7 @@ const FormBuilder = {
         )
       })
       const datePicker = h('el-date-picker', {
+        style: item.style || {},
         attrs: {
           ...vm.filterAttrs(item),
           type: item._type
@@ -290,6 +318,7 @@ const FormBuilder = {
         }
       })
       const input = h('el-input', {
+        style: item.style || {},
         attrs: {
           ...vm.filterAttrs(item)
         },

@@ -25,9 +25,23 @@ npm i element-json-scheme-component -D
 
 更新日志
 ```
+v1.0.8  2020.3.2
+
+- 优化jsonTable, 支持v-loading
+- 优化jsonForm, 增加类antd form的部分api，
+    - validateFields() // 异步校验表单，直接返回values
+    - setFieldValue()  // 提供手动设置表单项的value的方法
+    - getFieldsValue()  // 获取表单values
+    - 其他优化。 表单项json支持style属性，自定义样式
+    
+```
+
+
+```
 v1.0.7  2020.2.21
 
 - 优化jsonTable, 优化分页参数的callback
 - 优化jsonForm, formItem支持原生events事件
 
 ```
+

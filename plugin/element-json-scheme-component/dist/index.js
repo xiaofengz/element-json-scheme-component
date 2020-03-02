@@ -1,5 +1,5 @@
 /**
- * v1.0.7
+ * v1.0.8
  * (c) 2020 by xiaofengz
  */
 var defineProperty = function (obj, key, value) {
@@ -71,8 +71,7 @@ var FormBuilder = {
       }
     },
     labelWidth: {
-      type: String,
-      default: '150px'
+      type: String
     }
   },
   watch: {
@@ -123,6 +122,20 @@ var FormBuilder = {
       var vm = this;
       vm.$refs[vm.formRef].resetFields();
     },
+    setFieldValue: function setFieldValue(key, value) {
+      var vm = this;
+      vm.values[key] = value;
+    },
+    setFieldsValue: function setFieldsValue(obj) {
+      var vm = this;
+      Object.keys(obj).map(function (key) {
+        vm.values[key] = obj[key];
+      });
+    },
+    getFieldsValue: function getFieldsValue() {
+      var vm = this;
+      return vm.values;
+    },
     validate: function validate(cb) {
       var vm = this;
       vm.$refs[vm.formRef].validate(cb);
@@ -130,13 +143,23 @@ var FormBuilder = {
     validateField: function validateField(cb) {
       vm.$refs[vm.formRef].validateField(cb);
     },
+
+    // 异步校验表单，直接返回values
+    validateFields: function validateFields(cb) {
+      var vm = this;
+      return new Promise(function (resolve, reject) {
+        vm.$refs[vm.formRef].validate(function (valid, err) {
+          if (valid) resolve(vm.values);else reject(err);
+        });
+      });
+    },
     mergeValues: function mergeValues() {
       var vm = this;
       var model = vm.model;
       var properties = vm.config.properties;
 
-      var formData = {};
 
+      var formData = {};
       Object.keys(properties).map(function (key) {
         var _properties$key = properties[key],
             type = _properties$key.type,
@@ -144,7 +167,6 @@ var FormBuilder = {
 
         var defaultValue = void 0;
         if (type === 'checkbox' || type === 'select' && multiple) {
-
           defaultValue = defaultValue != null ? properties[key].defaultValue : [];
         } else {
           defaultValue = properties[key].defaultValue;
@@ -153,6 +175,7 @@ var FormBuilder = {
       });
       var mergeValues = _extends({}, formData, model);
       Object.keys(formData).forEach(function (key) {
+        // 强制设置多选的value为空数组，因为model可能会乱设置
         if (Array.isArray(formData[key]) && formData[key].length === 0 && (!model || !model[key])) {
           mergeValues[key] = [];
         }
@@ -161,7 +184,6 @@ var FormBuilder = {
 
         if (type === 'button') delete mergeValues[key];
       });
-
       return mergeValues;
     },
     filterAttrs: function filterAttrs() {
@@ -223,6 +245,7 @@ var FormBuilder = {
 
 
       var formEachItem = h(type.startWith("el") ? '' + type : 'el-' + type, {
+        style: item.style || {},
         attrs: _extends({}, vm.filterAttrs(item)),
         props: _extends({
           value: value
@@ -230,6 +253,7 @@ var FormBuilder = {
         on: _extends({}, modelEvents)
       });
       var button = h('el-button', {
+        style: item.style || {},
         attrs: _extends({}, vm.filterAttrs(item), {
           type: item._type
         }),
@@ -240,6 +264,7 @@ var FormBuilder = {
       }, item.text || item.value);
       // select
       var select = h('el-select', {
+        style: item.style || {},
         attrs: _extends({}, vm.filterAttrs(item)),
         props: _extends({
           value: value
@@ -258,6 +283,7 @@ var FormBuilder = {
           name: item.name
         }, option);
         return h('el-radio', {
+          style: item.style || {},
           attrs: _extends({}, vm.filterAttrs(option)),
           props: _extends({
             value: value
@@ -266,6 +292,7 @@ var FormBuilder = {
         }, [option.text]);
       });
       var datePicker = h('el-date-picker', {
+        style: item.style || {},
         attrs: _extends({}, vm.filterAttrs(item), {
           type: item._type
         }),
@@ -277,6 +304,7 @@ var FormBuilder = {
         on: _extends({}, modelEvents)
       });
       var input = h('el-input', {
+        style: item.style || {},
         attrs: _extends({}, vm.filterAttrs(item)),
         props: _extends({
           value: value
@@ -307,6 +335,12 @@ var TableBuilder = {
   name: 'ElJsonTable',
 
   props: {
+    loading: {
+      type: Boolean,
+      default: function _default() {
+        return false;
+      }
+    },
     data: {
       type: Array,
       default: function _default() {
@@ -390,8 +424,11 @@ var TableBuilder = {
     },
     renderTable: function renderTable(h, context) {
       var vm = this;
-
       return h('el-table', {
+        directives: [{
+          name: 'loading',
+          value: vm.loading
+        }],
         attrs: _extends({}, vm.filterAttrs(vm.config)),
         props: _extends({
           data: vm.data

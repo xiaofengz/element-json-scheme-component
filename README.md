@@ -76,6 +76,41 @@ mothods: {
 }
 ```
 
+#### 提供类antd form的部分api
+```javascript 
+  // 表单校验 方式一
+  const values = await this.$refs.form.validateFields();
+
+  // 方式二
+  this.$refs.form.validateFields().then((values) => {
+
+  }).catch((e) => {})
+  
+  // 方式三
+  this.$refs.form.validate(async (valid, err) => {
+    if (valid) {
+    
+    } else {
+      console.log(err)
+    }
+  }
+```
+
+```javascript
+  // 设置表单项的值
+  this.$refs.form.setFieldValue('formItemKey', value)
+  // 批量设置
+  this.$refs.form.setFieldsValue({
+    'formItemKey1', value1,
+    'formItemKey2', value2,
+  })
+```
+
+```javascript
+  // 获取表单项的值
+  const values = this.$refs.form.getFieldsValue()
+```
+
 ### 如果select组件的options数据需后端获取，在mounted手动修改this.formJson即可，写法如下
 ```javascript
   mounted() {
@@ -96,6 +131,18 @@ mothods: {
   },
 ```
 
+### 表单项联动，或设置默认值，使用setFieldValue() 写法如下
+```javascript
+  mounted() {
+    // 根据后端返回详情数据设置默认值
+    new Promise((resolve) => {
+      setTimeout(() => {
+        this.$refs.form.setFieldValue('key', value)
+      }, 1000)
+    })
+  },
+```
+
 ### 如果input组件为异步搜索，写法如下
 ```javascript
 mounted() {
@@ -109,15 +156,11 @@ methods: {
         cb([{
           "label": "结果1",
           "value": "结果1"
-        }, {
-          "label": "结果2",
-          "value": "结果2"
-        }, ])
+        }])
       }, 3000 * Math.random())
     }
 }
 ```
-
 
 
 #### Table组件的用法：el-json-table组件 [示例代码](https://github.com/xiaofengz/element-json-scheme-component/blob/master/src/examples/table_default.vue)  [在线demo](https://xiaofengz.github.io/element-json-scheme-component/#/table-default)
@@ -128,8 +171,7 @@ methods: {
 <el-json-table 
     :config="tableJson" 
     :data="tableData" 
-    @select="select" 
-    @select-all="selectAll">
+    @select="select" >
 </el-json-table>
 
 data() {
@@ -156,9 +198,6 @@ data() {
     }
 },
 methods: {
-  selectAll(val) {
-      console.log('selectAll', val)
-    },
   select(val) {
     console.log('select', val)
   }

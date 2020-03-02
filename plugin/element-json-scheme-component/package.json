@@ -1,6 +1,6 @@
 {
   "name": "element-json-scheme-component",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": " json scheme Form && Table && pagination, based on element-ui  ",
   "main": "dist/index.js",
   "files": [

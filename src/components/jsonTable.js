@@ -3,6 +3,12 @@ const TableBuilder = {
   name: 'ElJsonTable',
 
   props: {
+    loading: {
+      type: Boolean,
+      default() {
+        return false
+      }
+    },
     data: {
       type: Array,
       default () {
@@ -107,9 +113,14 @@ const TableBuilder = {
     },
     renderTable(h, context) {
       const vm = this
-
       return h(
         'el-table', {
+          directives: [
+            {
+              name: 'loading',
+              value: vm.loading,
+            }
+          ],
           attrs: {
             ...vm.filterAttrs(vm.config)
           },
